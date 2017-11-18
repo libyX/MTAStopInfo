@@ -19,12 +19,12 @@ before do
   end
 end
 
-# post '/signup' do
-#   token = @@mongo_handle.signup(@request_payload[:username],
-#                               @request_payload[:password])
+post '/signup' do
+  token = @@mongo_handle.signup(@request_payload[:username],
+                              @request_payload[:password])
 
-#   return {:status => "pass", :token => token}.to_json
-# end
+  return {:status => "pass", :token => token}.to_json
+end
 
 get '/' do
   "Hello World!"
