@@ -1,12 +1,12 @@
 # require 'rubygems'
 require 'sinatra'
-# require 'bcrypt'
+require 'bcrypt'
 require 'securerandom'
 # require_relative 'mongo_helper.rb'
 
-configure do
-  @@mongo_handle = Mongo_DB.new
-end
+# configure do
+#   @@mongo_handle = Mongo_DB.new
+# end
 before do
   begin
     if request.body.read(1)
