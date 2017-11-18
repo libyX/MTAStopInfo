@@ -2,7 +2,7 @@
 require 'sinatra'
 require 'bcrypt'
 require 'securerandom'
-require_relative 'mongo_helper.rb'
+# require_relative 'mongo_helper.rb'
 
 configure do
   @@mongo_handle = Mongo_DB.new
