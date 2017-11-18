@@ -111,14 +111,14 @@ class Mongo_DB
   end
 end
 
-db = Mongo_DB.new
-# db.test
-# db.drop_all_collections
-# db.signup('test3','Test3')
-# token = db.login('test3','Test3')
-# puts db.authenticate('test3',token)
-# doc = db.get_user('test')
-# stop = {"name"=>"name2","code"=>"10002"}
-# db.add_stop('test3',stop)
-# doc = db.update_stop('test','s7i6BS5clCM',stop)
-puts db.get_stops('test3')
+# db = Mongo_DB.new
+# # db.test
+# # db.drop_all_collections
+# # db.signup('test3','Test3')
+# # token = db.login('test3','Test3')
+# # puts db.authenticate('test3',token)
+# # doc = db.get_user('test')
+# # stop = {"name"=>"name2","code"=>"10002"}
+# # db.add_stop('test3',stop)
+# # doc = db.update_stop('test','s7i6BS5clCM',stop)
+# puts db.get_stops('test3')
