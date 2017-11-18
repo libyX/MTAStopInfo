@@ -1,6 +1,6 @@
 # require 'rubygems'
 require 'sinatra'
-require 'bcrypt'
+# require 'bcrypt'
 require 'securerandom'
 # require_relative 'mongo_helper.rb'
 
