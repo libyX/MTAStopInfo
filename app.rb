@@ -4,13 +4,13 @@ require 'bcrypt'
 require 'securerandom'
 require_relative 'mongo_helper.rb'
 
-class App < Sinatra::Base
-  # helpers do
-  #   mongo_handle = Mongo_DB.new
-  # end
-  # def initialize
-  #   @mongo_handle = Mongo_DB.new
-  # end
+# class App < Sinatra::Base
+#   # helpers do
+#   #   mongo_handle = Mongo_DB.new
+#   # end
+#   # def initialize
+#   #   @mongo_handle = Mongo_DB.new
+#   # end
   configure do
     @@mongo_handle = Mongo_DB.new
   end
@@ -123,5 +123,5 @@ class App < Sinatra::Base
       return {:status => "fail",:message => "Failed to update stop"}.to_json
     end
   end
-  run!
-end
+#   run!
+# end
