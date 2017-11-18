@@ -7,17 +7,17 @@ require_relative 'mongo_helper.rb'
 configure do
   @@mongo_handle = Mongo_DB.new
 end
-# before do
-#   begin
-#     if request.body.read(1)
-#       request.body.rewind
-#       @request_payload = JSON.parse request.body.read, { symbolize_names: true }
-#     end
-#   rescue JSON::ParserError => e
-#     request.body.rewind
-#     puts "The body #{request.body.read} was not JSON"
-#   end
-# end
+before do
+  begin
+    if request.body.read(1)
+      request.body.rewind
+      @request_payload = JSON.parse request.body.read, { symbolize_names: true }
+    end
+  rescue JSON::ParserError => e
+    request.body.rewind
+    puts "The body #{request.body.read} was not JSON"
+  end
+end
 
 # post '/signup' do
 #   token = @@mongo_handle.signup(@request_payload[:username],
