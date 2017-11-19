@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Sign Up</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/shop-item.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">MTA Stop Info</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/login.html">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/signup.html">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/signup.html">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+        <div class="container">
+        <div class="row" style="margin-top:100px;">
+
+          <div class="col-md-4 col-md-offset-4">
+          </div>
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Sign Up</h3>
+                    </div>
+                    <div class="panel-body" style="margin-top:20px;">
+                        <form role="form">
+                            <fieldset>
+                                <div class="form-group">
+                                    <input class="form-control" id="username" placeholder="Username" name="username" type="text" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" id="password" placeholder="Password" name="password" type="password" value="">
+                                </div>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <button type="button" id="signup" class="btn btn-lg btn-success btn-block">Sign Up</button>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+
+    <!-- Footer -->
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery/jquery.cookie.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+      $("#signup").on("click", function () {
+           var username = $("#username").val();
+           var password = $("#password").val();
+
+           var json = { "username": username , "password": password };
+
+           $.ajax({
+               type: "POST",
+               url: "/signup",
+               // The key needs to match your method's input parameter (case-sensitive).
+               data: JSON.stringify(json),
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function(data){
+                  status = JSON.parse(JSON.stringify(data)).status
+                  if (status == 'pass'){
+                    token = JSON.parse(JSON.stringify(data)).token
+                    $.cookie('username',username);
+                    $.cookie('token',token);
+                    $(location).attr('href', '/stops.html');
+                  }
+                  else 
+                  {
+                    message = JSON.parse(JSON.stringify(data)).message;
+                    alert(message);
+                  }
+               },
+               failure: function(errMsg) {
+                   alert(errMsg);
+               }
+           });
+      });
+    });
+
+    </script>    
+
+
+  </body>
+
+</html>

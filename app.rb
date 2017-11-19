@@ -61,13 +61,13 @@ post '/addstop' do
   if !auth_status 
     return {:status => "fail",:message => "Invalid Username or Session Key"}.to_json
   end
-
+  key = SecureRandom.urlsafe_base64(8)
   status = @@local_mongo_handle.add_stop(@request_payload[:username],
                                    		 @request_payload[:stop][:name],
-                                   		 @request_payload[:stop][:code])
+                                   		 @request_payload[:stop][:code],key)
   		   @@saas_mongo_handle.add_stop(@request_payload[:username],
                                    		@request_payload[:stop][:name],
-                                   		@request_payload[:stop][:code])
+                                   		@request_payload[:stop][:code],key)
   if status
     return {:status => "pass" }.to_json
   else
@@ -135,6 +135,6 @@ post '/updatestop' do
 end
 
 get '/' do
-  "Hello World!"
+  redirect '/login.html'
 end
 

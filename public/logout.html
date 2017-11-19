@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/shop-item.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">MTA Stop Info</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/login.html">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/signup.html">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/logout.html">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+        <div class="container">
+        <div class="row" style="margin-top:100px;">
+          <div class="col-md-5 col-md-offset-4">
+          </div>
+            <div class="col-md-5 col-md-offset-4">
+              <div class="starter-template">
+                <h1>Good Bye!</h1>
+              </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/jquery/jquery.cookie.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+      var json = { "username": $.cookie('username')};
+      $.ajax({
+          type: "POST",
+          url: "/logout",
+          // The key needs to match your method's input parameter (case-sensitive).
+          data: JSON.stringify(json),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          success: function(data){
+             status = JSON.parse(JSON.stringify(data)).status
+             if (status == 'pass'){
+             }
+             else 
+             {
+               message = JSON.parse(JSON.stringify(data)).message;
+               alert(message);
+             }
+          },
+          failure: function(errMsg) {
+              alert(errMsg);
+          }
+      });
+      $.removeCookie('username');
+      $.removeCookie('token');
+    });
+    </script>
+  </body>
+
+</html>

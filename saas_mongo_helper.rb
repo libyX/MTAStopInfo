@@ -72,13 +72,13 @@ class Mongo_DB_SAAS
     coll.find.first['data']
   end
 
-  def add_stop(username,stop_name,stop_code)
+  def add_stop(username,stop_name,stop_code,key)
     return false unless @client.database.collection_names.include?(username)
     coll = @client[username]
     doc = coll.find.first
     # stop.JSON.parse!
     # puts stop
-    doc['data'][SecureRandom.urlsafe_base64(8)] = {'name'=>stop_name,'code'=>stop_code}
+    doc['data'][key] = {'name'=>stop_name,'code'=>stop_code}
     coll.update_one({"_id" => doc["_id"]}, doc)
     return true
   end

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <meta name="description" content="">
+   <meta name="author" content="">
+
+   <title>Shop Item - Start Bootstrap Template</title>
+
+   <!-- Bootstrap core CSS -->
+   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+   <!-- Custom styles for this template -->
+   <link href="css/shop-item.css" rel="stylesheet">
+   <style type="text/css">
+      .floating {
+         position: fixed;
+         top: 80px;
+         right: 20px;
+         visibility: show;
+      }
+   </style>
+</head>
+
+<body>
+
+   <!-- Navigation -->
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+         <a class="navbar-brand" href="#">MTA Stop Info</a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+         <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+               <li class="nav-item">
+                  <a class="nav-link" href="/login.html">Login</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/signup.html">Sign Up</a>
+               </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="/logout.html">Logout</a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </nav>
+
+   <!-- Page Content -->
+   <button type="button" class="btn btn-success floating" data-toggle="modal" data-target="#addstop">Add Stop</button>
+
+   <div class="container">
+      <div class="row">
+         <div class="col-lg-3">
+            <h1 class="my-4">Stops</h1>
+         </div>
+         <div class="col-lg-9">
+
+            <div id="stops_content">
+
+            </div>
+         </div>
+      </div>
+
+      <div class="modal fade" id="stop_update_form" role="dialog">
+         <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h4>Update Stop</h4>
+               </div>
+               <div class="modal-body">
+                  <form role="form">
+                     <fieldset>
+                        <div class="form-group">
+                           <input id="old_stopname" class="form-control" placeholder="Stop Name" name="stopname" type="text" autofocus>
+                        </div>
+                        <div class="form-group">
+                           <input id="old_stopcode" class="form-control" placeholder="Stop Code" name="stopcode" type="text" value="">
+                        </div>
+                        <!-- Change this to a button or input when using this as a form -->
+                        <button id="updatestop" type="button" class="btn btn-lg btn-success btn-block">Update Stop</button>
+                     </fieldset>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="modal fade" id="addstop" role="dialog">
+         <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h4>New Stop</h4>
+               </div>
+               <div class="modal-body">
+                  <form role="form">
+                     <fieldset>
+                        <div class="form-group">
+                           <input id="new_stopname" class="form-control" placeholder="Stop Name" name="stopname" type="text" autofocus>
+                        </div>
+                        <div class="form-group">
+                           <input id="new_stopcode" class="form-control" placeholder="Stop Code" name="stopcode" type="text" value="">
+                        </div>
+                        <!-- Change this to a button or input when using this as a form -->
+                        <button id="addstop" type="button" href="index.html" class="btn btn-lg btn-success btn-block">Add Stop</button>
+                     </fieldset>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <script src="vendor/jquery/jquery.min.js"></script>
+      <script src="vendor/jquery/jquery.cookie.js"></script>
+      <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+      <script type="text/javascript">
+         $(document).ready(function() {
+            var username = $.cookie('username')
+            var token = $.cookie('token')
+            if (username == null || token == null) {
+               $(location).attr('href', '/login.html');
+            }
+            var json = {
+               "username": username,
+               "token": token
+            };
+
+            $.ajax({
+               type: "POST",
+               url: "/getstops",
+               data: JSON.stringify(json),
+               contentType: "application/json; charset=utf-8",
+               dataType: "json",
+               success: function(data) {
+                  status = JSON.parse(JSON.stringify(data)).status;
+                  if (status == 'pass') {
+                     stops = JSON.parse(JSON.stringify(data)).data;
+                     stop_content = ''
+                     jQuery.each(stops, function(i, val) {
+                        stop_content = stop_content +
+                           '<div class="card card-outline-secondary my-4">' +
+                           '<div class="card-header">' +
+                           val['name'] +
+                           '</div>' +
+                           '<div class="card-body">' +
+                           '<p>' + val['code'] + '</p>' +
+                           '<hr>' +
+                           '<button data-id="' + i + '" data-stopname="' + val['name'] + '" data-stopcode="' + val['code'] + '" id="updateform" type="button" class="btn btn-success" data-toggle="modal">Update</button>' +
+                           '<span>' + ' ' + '</span>' +
+                           '<button data-id="' + i + '" id="deletestop" type="button" class="btn btn-success">Delete</button>' +
+                           '</div>' +
+                           '</div>';
+                     });
+                     $("#stops_content").html(stop_content)
+                  } else {
+                     message = JSON.parse(JSON.stringify(data)).message;
+                     alert(message);
+                     $(location).attr('href', '/login.html');
+                  }
+               },
+               failure: function(errMsg) {
+                  alert(errMsg);
+               }
+            });
+            $("#addstop").on("click", function() {
+
+               var json = {
+                  "username": username,
+                  "token": token,
+                  "stop": {
+                     "name": $("#new_stopname").val(),
+                     "code": $("#new_stopcode").val()
+                  }
+               };
+
+               $.ajax({
+                  type: "POST",
+                  url: "/addstop",
+                  data: JSON.stringify(json),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function(data) {
+                     status = JSON.parse(JSON.stringify(data)).status
+                     if (status == 'pass') {
+                        location.reload();
+                     } else {
+                        message = JSON.parse(JSON.stringify(data)).message;
+                        alert(message);
+                     }
+                  },
+                  failure: function(errMsg) {
+                     alert(errMsg);
+                  }
+               });
+            });
+            $('body').on('click', '#deletestop', function() {
+               var json = {
+                  "username": username,
+                  "token": token,
+                  "key": $(this).data('id')
+               };
+
+               $.ajax({
+                  type: "POST",
+                  url: "/removestop",
+                  data: JSON.stringify(json),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function(data) {
+                     status = JSON.parse(JSON.stringify(data)).status
+                     if (status == 'pass') {
+                        location.reload();
+                     } else {
+                        message = JSON.parse(JSON.stringify(data)).message;
+                        alert(message);
+                     }
+                  },
+                  failure: function(errMsg) {
+                     alert(errMsg);
+                  }
+               });
+            });
+            $('body').on('click', '#updateform', function() {
+               console.log($(this).data('id'));
+               var stop_id = $(this).data('id');
+               var stop_name = $(this).data('stopname');
+               var stop_code = $(this).data('stopcode');
+
+               $("#stop_update_form").modal();
+               $("#updatestop").attr("data-id", stop_id);
+               $("#old_stopname").val(stop_name);
+               $("#old_stopcode").val(stop_code);
+            });
+
+            $('body').on('click', '#updatestop', function() {
+               console.log($("#updatestop").data('id'));
+               var json = {
+                  "username": username,
+                  "token": token,
+                  "key": $("#updatestop").data('id'),
+                  "stop": {
+                     "name": $("#old_stopname").val(),
+                     "code": $("#old_stopcode").val()
+                  }
+               };
+
+               $.ajax({
+                  type: "POST",
+                  url: "/updatestop",
+                  data: JSON.stringify(json),
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  success: function(data) {
+                     status = JSON.parse(JSON.stringify(data)).status
+                     if (status == 'pass') {
+                        location.reload();
+                     } else {
+                        message = JSON.parse(JSON.stringify(data)).message;
+                        alert(message);
+                     }
+                  },
+                  failure: function(errMsg) {
+                     alert(errMsg);
+                  }
+               });
+            });
+         });
+      </script>
+</body>
+
+</html>
