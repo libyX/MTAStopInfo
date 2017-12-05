@@ -69,7 +69,7 @@ post '/addstop' do
                                    		@request_payload[:stop][:name],
                                    		@request_payload[:stop][:code],key)
   if status
-    return {:status => "pass" }.to_json
+    return {:status => "pass" ,:key => key}.to_json
   else
     return {:status => "fail",:message => "Failed to add stop"}.to_json
   end
